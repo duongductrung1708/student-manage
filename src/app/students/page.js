@@ -14,13 +14,13 @@ export default function Students() {
   });
   const [filters, setFilters] = useState({
     searchTerm: "",
-    gender: "A",
+    gender: "",
   });
   const [searchTermDebounced] = useDebounce(filters.searchTerm, 300);
   const [pagination, setPagination] = useState({
     itemsPerPage: 5,
     pageIndex: 0,
-  })
+  });
   
   const router = useRouter();
   const createNew = () => {
@@ -38,7 +38,6 @@ export default function Students() {
   };
 
   const searchStudents = async () => {
-    console.log("searchStudents", filters, pagination);
     const result = await studentService.findStudents(filters, pagination);
     setSearchResult(result);
   };

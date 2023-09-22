@@ -1,6 +1,11 @@
 import { AppButton } from "./app-button";
 
-export const AppPagination = ({ itemsPerPage, pageIndex, total, setPageIndex }) => {
+export const AppPagination = ({ 
+    itemsPerPage, 
+    pageIndex, 
+    total, 
+    setPageIndex 
+}) => {
     const lastPageIndex = Math.ceil(total / itemsPerPage) - 1;
     return (
         <div>

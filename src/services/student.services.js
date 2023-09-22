@@ -17,16 +17,20 @@ const findStudents = async (filters, pagination) => {
             (s) => s.gender === filters.gender
         );
     }
-    const paginatedStudents = filteredStudents.filter((_, index) => {
-        const startIndex = pagination.pageIndex * pagination.itemsPerPage;
-        const endIndex = startIndex + pagination.itemsPerPage - 1;
-        return index >= startIndex && index < endIndex;
-    });
+
+    const total = filteredStudents.length;
+
+    const paginatedStudents = filteredStudents.slice(
+        pagination.pageIndex * pagination.itemsPerPage,
+        (pagination.pageIndex + 1) * pagination.itemsPerPage
+    );
+
     return {
-        data: filteredStudents,
-        total: paginatedStudents.length,
+        data: paginatedStudents,
+        total: total,
     };
 };
+
 
 const findStudentById = (id) => {
     alert("findStudentById");
