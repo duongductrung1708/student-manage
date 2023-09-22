@@ -1,7 +1,7 @@
 'use client';
 
 import { AppButton } from "@app/components/app-button";
-import { useRouter } from "next/navigation"; // Correct import for Next.js 12.x
+import { useRouter } from "next/navigation";
 
 export default function Home() {
   const router = useRouter();
@@ -13,7 +13,7 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen bg-gradient-to-r from-black to-white text-white p-10">
+    <main className="sticky top-0 z-50 min-h-screen bg-gradient-to-r from-black to-white text-white p-10">
       <div className="container mx-auto text-center">
         <h1 className="text-4xl font-bold mb-6 text-white">Welcome to User List</h1>
         <p className="text-lg mb-8 text-white">
