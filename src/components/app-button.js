@@ -1,8 +1,8 @@
 export const AppButton = ({ color, className, children, ...otherProps }) => {
     let buttonClassName = 
-    "text-white px-4 py-2 text-sm rounded-full cursor-pointer"
+    "px-4 py-2 text-sm rounded-full cursor-pointer"
     if (color === "black") {
-        buttonClassName += " bg-black";
+        buttonClassName += " bg-black text-white ";
     } else if (color === "white") {
         buttonClassName += " bg-white text-black";
     }
