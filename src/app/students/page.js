@@ -8,7 +8,10 @@ import { useDebounce } from "use-debounce";
 import { AppPagination } from "@app/components/app-pagination";
 
 export default function Students() {
-  const [students, setStudents] = useState([]);
+  const [searchResult, setSearchResult] = useState({
+    data: [],
+    total: 0,
+  });
   const [filters, setFilters] = useState({
     searchTerm: "",
     gender: "A",
@@ -36,19 +39,21 @@ export default function Students() {
 
   const searchStudents = async () => {
     console.log("searchStudents", filters, pagination);
-    const result = await studentService.findStudents(filters);
-    setStudents(result);
+    const result = await studentService.findStudents(filters, pagination);
+    setSearchResult(result);
   };
 
   useEffect(() => {
-    console.log("Student page is mounted");
-
+    setPagination({
+      ...pagination,
+      pageIndex: 0,
+    });
     searchStudents();
-
-    return () => {
-      console.log("Student page is unmounted");
-    };
   }, [filters.gender, searchTermDebounced]);
+
+  useEffect(() => {
+    searchStudents();
+  }, [pagination.pageIndex]);
 
   return (
     <div className="bg-gradient-to-r from-black to-white text-white min-h-screen">
@@ -130,12 +135,7 @@ export default function Students() {
               </label>
             </div>
           </div>       
-          {students
-          .filter((_, index) => {
-            const startIndex = pagination.pageIndex * pagination.itemsPerPage;
-            const endIndex = startIndex + pagination.itemsPerPage - 1;
-            return index >= startIndex && index < endIndex;
-          })
+          {searchResult.data
           .map((student) => (
             <div key={student.id} className="border p-2 mt-2 bg-transparent">
               <div>Name: {student.name}</div>
@@ -145,7 +145,7 @@ export default function Students() {
           ))}
           <AppPagination 
             {...pagination} 
-            total={students.length} 
+            total={searchResult.total} 
             setPageIndex={(newPageIndex) => {
               setPagination({
                 ...pagination,

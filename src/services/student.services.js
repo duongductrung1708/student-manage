@@ -4,7 +4,7 @@ if (typeof window !== "undefined") {
     students = JSON.parse(localStorage.getItem("students")) || [];
 }
 
-const findStudents = async (filters) => {
+const findStudents = async (filters, pagination) => {
     let filteredStudents = students;
     const searchTerm = filters.searchTerm?.trim().toLowerCase();
     if (filters.searchTerm.trim()) {
@@ -17,7 +17,15 @@ const findStudents = async (filters) => {
             (s) => s.gender === filters.gender
         );
     }
-    return filteredStudents;
+    const paginatedStudents = filteredStudents.filter((_, index) => {
+        const startIndex = pagination.pageIndex * pagination.itemsPerPage;
+        const endIndex = startIndex + pagination.itemsPerPage - 1;
+        return index >= startIndex && index < endIndex;
+    });
+    return {
+        data: filteredStudents,
+        total: paginatedStudents.length,
+    };
 };
 
 const findStudentById = (id) => {
