@@ -5,6 +5,8 @@ export const AppButton = ({ color, className, children, ...otherProps }) => {
         buttonClassName += " bg-black text-white ";
     } else if (color === "white") {
         buttonClassName += " bg-white text-black";
+    } else if (color === "gray") {
+        buttonClassName += " bg-gray-500 text-black";
     }
     if (className) {
         buttonClassName += " " + className;

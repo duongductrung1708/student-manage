@@ -5,6 +5,7 @@ import { studentService } from "@app/services/student.services";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useDebounce } from "use-debounce";
+import { AppPagination } from "@app/components/app-pagination";
 
 export default function Students() {
   const [students, setStudents] = useState([]);
@@ -13,6 +14,10 @@ export default function Students() {
     gender: "A",
   });
   const [searchTermDebounced] = useDebounce(filters.searchTerm, 300);
+  const [pagination, setPagination] = useState({
+    itemsPerPage: 5,
+    pageIndex: 0,
+  })
   
   const router = useRouter();
   const createNew = () => {
@@ -30,6 +35,7 @@ export default function Students() {
   };
 
   const searchStudents = async () => {
+    console.log("searchStudents", filters, pagination);
     const result = await studentService.findStudents(filters);
     setStudents(result);
   };
@@ -124,14 +130,30 @@ export default function Students() {
               </label>
             </div>
           </div>       
-          {students.map((student) => (
+          {students
+          .filter((_, index) => {
+            const startIndex = pagination.pageIndex * pagination.itemsPerPage;
+            const endIndex = startIndex + pagination.itemsPerPage - 1;
+            return index >= startIndex && index < endIndex;
+          })
+          .map((student) => (
             <div key={student.id} className="border p-2 mt-2 bg-transparent">
               <div>Name: {student.name}</div>
               <div>Age: {student.age}</div>
               <div>Gender: {getGender(student.gender)}</div>
             </div>
           ))}
-          <Pagination />
+          <AppPagination 
+            {...pagination} 
+            total={students.length} 
+            setPageIndex={(newPageIndex) => {
+              setPagination({
+                ...pagination,
+                pageIndex: newPageIndex,
+              })
+            }
+          }
+        />
         </div>
       </div>
     </div>
