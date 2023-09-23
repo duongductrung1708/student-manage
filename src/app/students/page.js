@@ -27,6 +27,10 @@ export default function Students() {
     router.push('/students/create');
   };
 
+  const editStudent = (id) => {
+    router.push(`/students/${id}`);
+  };  
+
   const getGender = (value) => {
     if (value === 'M') {
       return "Male";
@@ -40,6 +44,15 @@ export default function Students() {
   const searchStudents = async () => {
     const result = await studentService.findStudents(filters, pagination);
     setSearchResult(result);
+  };
+
+  const confirmDelete = (student) => {
+    if (!window.confirm(`Are you sure you want to delete student  "${student.name}"`)){
+      return;
+    }
+    studentService.deleteStudent(student.id);
+    alert("Delete successfully");
+    searchStudents();
   };
 
   useEffect(() => {
@@ -140,6 +153,14 @@ export default function Students() {
               <div>Name: {student.name}</div>
               <div>Age: {student.age}</div>
               <div>Gender: {getGender(student.gender)}</div>
+              <div>
+                <AppButton color="black" onClick={() => confirmDelete(student)}>
+                  Delete
+                </AppButton>
+                <AppButton color="white" onClick={() => editStudent(student.id)}>
+                  Edit
+                </AppButton>                
+              </div>
             </div>
           ))}
           <AppPagination 

@@ -7,6 +7,7 @@ export const AppPagination = ({
     setPageIndex 
 }) => {
     const lastPageIndex = Math.ceil(total / itemsPerPage) - 1;
+    const totalPage = lastPageIndex === - 1 ? 1 : lastPageIndex + 1;
     return (
         <div>
             <AppButton 
@@ -17,11 +18,13 @@ export const AppPagination = ({
                 Prev
             </AppButton>
             <span>
-                Page {pageIndex + 1}/{lastPageIndex + 1}
+                Page {pageIndex + 1}/{totalPage}
             </span>
             <AppButton 
-            color={pageIndex === lastPageIndex ?"gray": 'black'} 
-            disabled={pageIndex === lastPageIndex}
+            color={
+                pageIndex === lastPageIndex || lastPageIndex === - 1 ? "gray": 'black'
+            } 
+            disabled={pageIndex === lastPageIndex || lastPageIndex === - 1}
             onClick={() => setPageIndex(pageIndex + 1)}
             >
                 Next
