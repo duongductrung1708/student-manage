@@ -33,7 +33,7 @@ export default function CreateNewStudent() {
       console.error(e);
     }
   };
-
+  console.log("students", student, student.gender === "M");
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-black to-white text-white">
       <div className="bg-transparent p-8 rounded shadow-lg w-96">

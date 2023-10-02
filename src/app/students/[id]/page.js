@@ -4,6 +4,7 @@ import { AppButton } from "@app/components/app-button";
 import { studentService } from "@app/services/student.services";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useDispatch } from "react-redux";
 
 export default function EditStudent({ params }) {
   console.log(params.id);
@@ -14,6 +15,7 @@ export default function EditStudent({ params }) {
     age: "",
     gender: "M",
   });
+  const dispatch = useDispatch();
 
   const onSubmit = async (e) => {
     try {
@@ -27,9 +29,6 @@ export default function EditStudent({ params }) {
         alert("Please enter age");
         return;
       }
-      await studentService.updateStudent(student);
-      alert("Save success!");
-      router.push("/students");
     } catch (e) {
       alert("Error creating student");
       console.error(e);

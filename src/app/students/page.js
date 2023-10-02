@@ -3,11 +3,13 @@
 import { AppButton } from "@app/components/app-button";
 import { studentService } from "@app/services/student.services";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useDebounce } from "use-debounce";
 import { AppPagination } from "@app/components/app-pagination";
+import { ThemeContext } from "../contexts/theme.context";
 
 export default function Students() {
+  const theme = useContext(ThemeContext);
   const [searchResult, setSearchResult] = useState({
     data: [],
     total: 0,
@@ -68,8 +70,10 @@ export default function Students() {
   }, [pagination.pageIndex]);
 
   return (
+    <>
     <div className="bg-gradient-to-r from-black to-white text-white min-h-screen">
       <div className="container mx-auto py-4">
+        <div>Theme: {theme}</div>
         <div className="text-2xl font-bold">Students</div>
         <AppButton className="mr-2" color="blue" onClick={createNew}>
           Create new
@@ -177,5 +181,6 @@ export default function Students() {
         </div>
       </div>
     </div>
+    </>
   );
 }
