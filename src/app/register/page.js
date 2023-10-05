@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
 
 export default function Register() {
 const router = useRouter();
@@ -39,50 +41,42 @@ const router = useRouter();
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-black to-white text-white">
       <div className="bg-transparent p-8 rounded shadow-lg w-96">
         <h2 className="text-2xl font-bold mb-4">Register</h2>
-        <div>
-          <div className="mb-4">
-            <label htmlFor="email" className="block text-sm font-semibold">
-              Email
-            </label>
-            <input
-              className="border border-gray-300 px-3 py-2 rounded w-full font-bold text-black"
-              type="email"
-              name="email"
-              id="email"
-              value={signInData.email}
-              onChange={(e) => {
-                setSignInData({
-                  ...signInData,
-                  email: e.target.value,
-                });
-              }}
-            />
-          </div>
-          <div className="mb-4">
-            <label htmlFor="password" className="block text-sm font-semibold">
-              Password
-            </label>
-            <input
-              className="border border-gray-300 px-3 py-2 rounded w-full font-bold text-black"
-              type="password"
-              name="password"
-              id="password"
-              value={signInData.password}
-              onChange={(e) => {
-                setSignInData({
-                  ...signInData,
-                  password: e.target.value,
-                });
-              }}
-            />
-          </div>
-          <AppButton 
+        <div className="flex flex-col gap-3">
+          <TextField 
+            id="email" 
+            name="email" 
+            label="Email" 
+            variant="standard" 
+            value={signInData.email}
+            onChange={(e) => {
+              setSignInData({
+                ...signInData,
+                email: e.target.value,
+              });
+            }}
+          />
+          <TextField 
+            id="password"  
+            name="password" 
+            label="Password" 
+            variant="standard"
+            type="password" 
+            value={signInData.password}
+            onChange={(e) => {
+              setSignInData({
+                ...signInData,
+                password: e.target.value,
+              });
+            }}
+          />          
+          <Button
+          variant="contained"
           type="button" 
-          onClick={onSubmit} 
-          color="black"
+          onClick={onSubmit}
+          color="warning"
           >
             Register
-          </AppButton>
+          </Button>
         </div>
       </div>
     </div>

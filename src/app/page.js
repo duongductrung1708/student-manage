@@ -4,6 +4,7 @@ import { AppButton } from "@app/components/app-button";
 import { getAuth, signOut } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
+import Button from "@mui/material/Button";
 
 export default function Home() {
   const router = useRouter();
@@ -32,25 +33,25 @@ export default function Home() {
         <div className="flex justify-center space-x-4">
           {!user.id && (
             <>
-              <AppButton className="mr-2" color="black" onClick={signIn}>
+              <Button variant="contained" color="primary" className="mr-2" onClick={signIn}>
                 Sign in
-              </AppButton>
-              <AppButton className="mr-2" color="black" onClick={register}>
+              </Button>
+              <Button variant="contained" color="primary" className="mr-2" onClick={register}>
                 Register
-              </AppButton>         
+              </Button>         
             </>
           )}
           {!!user.id && (
             <>
               <div>Hello, {user.displayName}</div>
-              <AppButton className="mr-2" color="black" onClick={signOutUser}>
+              <Button variant="contained" color="primary" className="mr-2" onClick={signOutUser}>
                 Sign out
-              </AppButton>  
+              </Button>  
             </>         
           )}          
-          <AppButton className="mr-2" color="white" onClick={goToStudentsPage}>
+          <Button variant="contained" color="primary" className="mr-2" onClick={goToStudentsPage}>
             Go to Students
-          </AppButton>                  
+          </Button>
         </div>
       </div>
     </main>

@@ -2,6 +2,8 @@ import Link from 'next/link';
 import './globals.css'
 import { Inter } from 'next/font/google'
 import { AppProvider } from '@app/components/app-providers';
+import Button from '@mui/material/Button';
+import ButtonGroup from '@mui/material/ButtonGroup';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -11,19 +13,29 @@ export const metadata = {
 }
 
 export default function RootLayout({ children }) {
+  const menuButtonStyles = {
+    textTransform: 'uppercase',
+    borderRadius: 8,
+  }
   return (
     <html lang="en">
       <body className={inter.className}>
         <AppProvider>
         <nav className="sticky top-0 z-50 bg-gradient-to-r from-black to-white p-4">
-          <div className="container mx-auto flex items-center justify-between">
-            <Link className='text-white text-xl font-bold' href='/'>
-              Home
-            </Link>
-            <div className="space-x-4">
-              <Link className='text-black' href='/students'>
-                Students
-              </Link>
+          <div className="container mx-auto flex items-center justify-between">           
+            <div className="space-x-4">             
+              <ButtonGroup variant="text" aria-label="text button group">
+                <Button style={menuButtonStyles}>
+                  <Link className='text-white text-xl font-bold' href='/'>
+                    Home
+                  </Link>
+                </Button>
+                <Button style={menuButtonStyles}>
+                  <Link className='text-white' href='/students'>
+                    Students
+                  </Link>
+                </Button>
+              </ButtonGroup>
             </div>
           </div>
         </nav>

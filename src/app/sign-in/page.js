@@ -1,27 +1,61 @@
 "use client";
 
-import { AppButton } from "@app/components/app-button";
+import React from "react";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert, { AlertProps } from "@mui/material/Alert";
+import { sleep } from "@app/utils/sleep";
+
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 export default function SignIn() {
 const router = useRouter();
+  const [alertState, setAlert] = useState ({
+    open: false,
+    message: "",
+    severity: "success",
+  })
   const [signInData, setSignInData] = useState({
     email: "",
     password: "",
   });
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    
+    setAlert({
+      open: false,
+      message: "",
+      severity: "success",
+    });
+  };
 
   const onSubmit = async (e) => {
     try {
       e.preventDefault();
 
       if (!signInData.email) {
-        alert("Please input email");
+        setAlert({
+          open: true,
+          message: "Please input email",
+          severity: "error"
+        })
         return;
       }
       if (!signInData.password) {
-        alert("Please input password");
+        setAlert({
+          open: true,
+          message: "Please input password",
+          severity: "error",
+        });   
         return;
       }
       const auth = getAuth();
@@ -30,9 +64,23 @@ const router = useRouter();
         signInData.email,
         signInData.password,
       );
+      setAlert({
+        open: true,
+        message: "Sign in successfully",
+        severity: "success",
+      });
+      await sleep(1000);
       router.push("/");
     } catch (e) {
-      alert(e.message);
+      let errorMessage = e.message;
+      if (e.code === "auth/invalid-login-credentials") {
+        errorMessage = "Invalid email or password";
+      }
+      setAlert({
+        open: true,
+        message: e.message,
+        severity: "error",
+      });
       console.error(e);
     }
   };
@@ -40,46 +88,52 @@ const router = useRouter();
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-black to-white text-white">
       <div className="bg-transparent p-8 rounded shadow-lg w-96">
         <h2 className="text-2xl font-bold mb-4">Sign In</h2>
-        <form onSubmit={onSubmit}>
-          <div className="mb-4">
-            <label htmlFor="email" className="block text-sm font-semibold">
-              Email
-            </label>
-            <input
-              className="border border-gray-300 px-3 py-2 rounded w-full font-bold text-black"
-              type="email"
-              name="email"
-              id="email"
-              value={signInData.email}
-              onChange={(e) => {
-                setSignInData({
-                  ...signInData,
-                  email: e.target.value,
-                });
-              }}
-            />
-          </div>
-          <div className="mb-4">
-            <label htmlFor="password" className="block text-sm font-semibold">
-              Password
-            </label>
-            <input
-              className="border border-gray-300 px-3 py-2 rounded w-full font-bold text-black"
-              type="password"
-              name="password"
-              id="password"
-              value={signInData.password}
-              onChange={(e) => {
-                setSignInData({
-                  ...signInData,
-                  password: e.target.value,
-                });
-              }}
-            />
-          </div>
-          <AppButton type="submit" color="black">
+        <form onSubmit={onSubmit} className="flex flex-col gap-3">
+          <TextField 
+            id="email" 
+            name="email" 
+            label="Email" 
+            variant="standard" 
+            value={signInData.email}
+            onChange={(e) => {
+              setSignInData({
+                ...signInData,
+                email: e.target.value,
+              });
+            }}
+          />
+          <TextField 
+            id="password"  
+            name="password" 
+            label="Password" 
+            variant="standard"
+            type="password" 
+            value={signInData.password}
+            onChange={(e) => {
+              setSignInData({
+                ...signInData,
+                password: e.target.value,
+              });
+            }}
+          /> 
+          <Button variant="contained" type="submit" color="warning">
             Sign in
-          </AppButton>
+          </Button>
+          {alertState.open && (
+          <Snackbar 
+            open={alertState.open} 
+            autoHideDuration={3000} 
+            onClose={handleClose}
+          >
+            <Alert 
+              onClose={handleClose} 
+              severity={alertState.severity} 
+              sx={{ width: '100%' }}
+            >
+              {alertState.message} 
+            </Alert>
+          </Snackbar>
+          )}
         </form>
       </div>
     </div>
