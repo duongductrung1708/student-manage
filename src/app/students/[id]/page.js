@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
 import { AppButton } from "@app/components/app-button";
-import { studentService } from "@app/services/student.services";
-import { useEffect, useState } from "react";
+import { studentBackendService } from "@app/services/student-backend.services";
+import { Alert, Snackbar } from "@mui/material";
 import { useRouter } from "next/navigation";
-import { useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
 
 export default function EditStudent({ params }) {
   console.log(params.id);
@@ -15,7 +15,22 @@ export default function EditStudent({ params }) {
     age: "",
     gender: "M",
   });
-  const dispatch = useDispatch();
+  const [alertState, setAlert] = useState({
+    open: false,
+    message: "",
+    severity: "success",
+  });
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setAlert({
+      open: false,
+      message: "",
+      severity: "success",
+    });
+  };
 
   const onSubmit = async (e) => {
     try {
@@ -26,24 +41,31 @@ export default function EditStudent({ params }) {
         return;
       }
       if (!student.age) {
-        alert("Please enter age");
+        alert("Please input age");
         return;
       }
+      await studentBackendService.updateStudent(student);
+      setAlert({
+        open: true,
+        message: "Saved successfully",
+        severity: "success",
+      });
+      router.push("/students");
     } catch (e) {
-      alert("Error creating student");
+      alert("Save failed. Please try again");
       console.error(e);
     }
   };
 
   useEffect(() => {
     const findStudent = async () => {
-      const student = await studentService.findStudentById(+params.id);
+      const student = await studentBackendService.findStudentById(+params.id);
       if (!student) {
         alert("Student not found");
         return;
       }
       setStudent(student);
-    }
+    };
     findStudent();
   }, []);
 
@@ -67,7 +89,7 @@ export default function EditStudent({ params }) {
               value={student.id}
               disabled
             />
-          </div>          
+          </div>
           <div className="mb-4">
             <label htmlFor="name" className="block text-sm font-semibold">
               Name
@@ -147,6 +169,21 @@ export default function EditStudent({ params }) {
             Save
           </AppButton>
         </form>
+        {alertState.open && (
+          <Snackbar
+            open={alertState.open}
+            autoHideDuration={3000}
+            onClose={handleClose}
+          >
+            <Alert
+              onClose={handleClose}
+              severity={alertState.severity}
+              sx={{ width: "100%" }}
+            >
+              {alertState.message}
+            </Alert>
+          </Snackbar>
+        )}
       </div>
     </div>
   );

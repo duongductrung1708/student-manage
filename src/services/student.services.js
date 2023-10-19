@@ -22,21 +22,19 @@ const findStudents = async (filters, pagination) => {
     );
   }
 
-  const total = filteredStudents.length;
-
-  const paginatedStudents = filteredStudents.slice(
-    pagination.pageIndex * pagination.itemsPerPage,
-    (pagination.pageIndex + 1) * pagination.itemsPerPage
-  );
-
+  const paginatedStudents = filteredStudents.filter((_, index) => {
+    const startIndex = pagination.pageIndex * pagination.itemsPerPage;
+    const endIndex = startIndex + pagination.itemsPerPage - 1;
+    return index >= startIndex && index <= endIndex;
+  });
   return {
     data: paginatedStudents,
-    total: total,
+    total: filteredStudents.length,
   };
 };
 
 const findStudentById = (id) => {
-    console.log(students, id);
+  console.log(students, id);
   return students.find((s) => s.id === id);
 };
 
