@@ -36,6 +36,7 @@ const validationSchema = yup.object({
 });
 
 export default function CreateNewStudent() {
+  const [busy, setBusy] = useState(false);
   const router = useRouter();
   const [alertState, setAlert] = useState({
     open: false,
@@ -56,6 +57,8 @@ export default function CreateNewStudent() {
 
   const onSubmit = async (values) => {
     try {
+      setBusy(true);
+      await sleep(2000);
       await studentBackendService.createStudent({
         ...values,
         age: +values.age,
@@ -74,6 +77,8 @@ export default function CreateNewStudent() {
         severity: "error",
       });
       console.error(e);
+    } finally {
+      setBusy(false);
     }
   };
 
@@ -89,8 +94,10 @@ export default function CreateNewStudent() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-black to-white text-white">
-      <div className="bg-transparent p-8 rounded shadow-lg w-96">
-        <h2 className="text-2xl font-bold mb-4">Create New Student</h2>
+      <div className="bg-zinc-300 p-8 rounded shadow-lg w-96">
+        <h2 className="text-2xl font-bold mb-4 text-black">
+          Create New Student
+        </h2>
         <form onSubmit={formik.handleSubmit} className="flex flex-col gap-3">
           <TextField
             variant="standard"
@@ -130,7 +137,7 @@ export default function CreateNewStudent() {
               <FormControlLabel value="M" control={<Radio />} label="Male" />
             </RadioGroup>
           </FormControl>
-          <Button type="submit" className="mt-2">
+          <Button type="submit" className="mt-2" disabled={busy}>
             Save
           </Button>
         </form>

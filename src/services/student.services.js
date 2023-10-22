@@ -34,7 +34,6 @@ const findStudents = async (filters, pagination) => {
 };
 
 const findStudentById = (id) => {
-  console.log(students, id);
   return students.find((s) => s.id === id);
 };
 

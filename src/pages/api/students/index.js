@@ -29,7 +29,6 @@ const searchStudents = async (req, res) => {
   const total = await Student.count({
     where,
   });
-  console.log(result, total);
 
   res.status(200).json({
     data: result,
@@ -39,13 +38,13 @@ const searchStudents = async (req, res) => {
 
 const createStudent = async (req, res) => {
   const newStudent = JSON.parse(req.body);
-  await Student.create({
+  const newRecord = await Student.create({
     name: newStudent.name,
     age: newStudent.age,
     gender: newStudent.gender,
   });
   res.status(200).json({
-    id,
+    id: newRecord.id,
   });
 };
 

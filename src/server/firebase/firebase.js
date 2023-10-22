@@ -18,19 +18,31 @@ const serviceAccount = {
 };
 
 let app;
-if (!admin.apps.length) {
-  app = admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
-  });
-}
 
-console.log("Firebase initialized (server)", app);
+const getApp = () => {
+  if (!app) {
+    try {
+      app = admin.initializeApp({
+        credential: admin.credential.cert(serviceAccount),
+      });
+      console.log("Firebase Initialized.");
+    } catch (error) {
+      /*
+       * We skip the "already exists" message which is
+       * not an actual error when we're hot-reloading.
+       */
+      if (!/already exists/u.test(error.message)) {
+        console.error("Firebase admin initialization error", error.stack);
+      }
+    }
+  }
+  return app;
+};
 
 export const validateRequest = async (req) => {
   try {
     const token = req.headers.authorization.split(" ")[1];
-    console.log("token", token);
-    const decodedToken = await app.auth().verifyIdToken(token);
+    const decodedToken = await getApp().auth().verifyIdToken(token);
     return decodedToken;
   } catch (error) {
     console.log(error);

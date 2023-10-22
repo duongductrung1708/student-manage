@@ -74,6 +74,7 @@ const deleteStudent = async (id) => {
       ...(await getAuthorizationHeader()),
     },
   });
+  debugger;
   if (!response.ok) {
     throw new Error(response.statusText);
   }

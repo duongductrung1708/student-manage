@@ -76,13 +76,23 @@ export default function Students() {
     }
   };
 
-  const confirmDelete = (student) => {
-    if (!window.confirm(`Are you sure to delete student "${student.name}"?`)) {
-      return;
+  const confirmDelete = async (student) => {
+    try {
+      if (
+        !window.confirm(`Are you sure to delete student "${student.name}"?`)
+      ) {
+        return;
+      }
+      await studentBackendService.deleteStudent(student.id);
+      alert("Delete success");
+      searchStudents();
+    } catch (error) {
+      setAlert({
+        open: true,
+        message: error.message,
+        severity: "error",
+      });
     }
-    studentBackendService.deleteStudent(student.id);
-    alert("Delete success");
-    searchStudents();
   };
 
   useEffect(() => {

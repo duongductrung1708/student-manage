@@ -19,13 +19,13 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 });
 
 const validationSchema = yup.object({
-    email: yup.string().required("Email is required").email("Invalid email"),
-    password: yup.string().required("Password is required"),
-  });
+  email: yup.string().required("Email is required").email("Invalid email"),
+  password: yup.string().required("Password is required"),
+});
 
 export default function SignIn() {
-const router = useRouter();
-  const [alertState, setAlert] = useState ({
+  const router = useRouter();
+  const [alertState, setAlert] = useState({
     open: false,
     message: "",
     severity: "success",
@@ -36,7 +36,7 @@ const router = useRouter();
     if (reason === "clickaway") {
       return;
     }
-    
+
     setAlert({
       open: false,
       message: "",
@@ -47,7 +47,7 @@ const router = useRouter();
   const onSubmit = async (values) => {
     try {
       const auth = getAuth();
-      await signInWithEmailAndPassword (auth, values.email, values.password);
+      await signInWithEmailAndPassword(auth, values.email, values.password);
       setAlert({
         open: true,
         message: "Sign in successfully",
@@ -70,46 +70,48 @@ const router = useRouter();
   };
 
   const formik = useFormik({
-     initialValues: {
-        email: "",
-        password: "",
-     },
-     validationSchema,
-     onSubmit,
-   });
+    initialValues: {
+      email: "",
+      password: "",
+    },
+    validationSchema,
+    onSubmit,
+  });
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-black to-white text-white">
-      <div className="bg-transparent p-8 rounded shadow-lg w-96">
-        <h2 className="text-2xl font-bold mb-4">Sign In</h2>
+      <div className="bg-zinc-300 p-8 rounded shadow-lg w-96">
+        <h2 className="text-2xl font-bold mb-4 text-black">Sign In</h2>
         <form onSubmit={formik.handleSubmit} className="flex flex-col gap-3">
-          <TextField 
-            id="email" 
-            name="email" 
-            label="Email" 
-            variant="standard" 
+          <TextField
+            id="email"
+            name="email"
+            label="Email"
+            variant="standard"
             onChange={formik.handleChange}
             value={formik.values.email}
             error={formik.touched.email && Boolean(formik.errors.email)}
           />
-          {formik.touched.email && formik.errors.email && formik.errors.email && (
-            <FormHelperText error>{formik.errors.email}</FormHelperText>
-          )}
-          <TextField 
-            id="password"  
-            name="password" 
-            label="Password" 
+          {formik.touched.email &&
+            formik.errors.email &&
+            formik.errors.email && (
+              <FormHelperText error>{formik.errors.email}</FormHelperText>
+            )}
+          <TextField
+            id="password"
+            name="password"
+            label="Password"
             variant="standard"
-            type={showPassword ? "text" : "password"} 
+            type={showPassword ? "text" : "password"}
             onChange={formik.handleChange}
             value={formik.values.password}
             error={formik.touched.password && Boolean(formik.errors.password)}
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
-                  <IconButton 
-                    onClick={() => setShowPassword(!showPassword)} 
-                    size="small" 
+                  <IconButton
+                    onClick={() => setShowPassword(!showPassword)}
+                    size="small"
                     tabIndex={-1}
                   >
                     {showPassword ? <VisibilityOff /> : <Visibility />}
@@ -118,26 +120,28 @@ const router = useRouter();
               ),
             }}
           />
-          {formik.touched.email && formik.errors.password && formik.errors.password && (
-            <FormHelperText error>{formik.errors.password}</FormHelperText>
-          )} 
-          <Button variant="contained" type="submit" color="warning">
+          {formik.touched.email &&
+            formik.errors.password &&
+            formik.errors.password && (
+              <FormHelperText error>{formik.errors.password}</FormHelperText>
+            )}
+          <Button variant="contained" type="submit" color="primary">
             Sign in
           </Button>
           {alertState.open && (
-          <Snackbar 
-            open={alertState.open} 
-            autoHideDuration={3000} 
-            onClose={handleClose}
-          >
-            <Alert 
-              onClose={handleClose} 
-              severity={alertState.severity} 
-              sx={{ width: '100%' }}
+            <Snackbar
+              open={alertState.open}
+              autoHideDuration={3000}
+              onClose={handleClose}
             >
-              {alertState.message} 
-            </Alert>
-          </Snackbar>
+              <Alert
+                onClose={handleClose}
+                severity={alertState.severity}
+                sx={{ width: "100%" }}
+              >
+                {alertState.message}
+              </Alert>
+            </Snackbar>
           )}
         </form>
       </div>
