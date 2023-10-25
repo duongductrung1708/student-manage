@@ -13,7 +13,8 @@ export default function EditStudent({ params }) {
     id: undefined,
     name: "",
     age: "",
-    gender: "M",
+    address: "",
+    // gender: "M",
   });
   const [alertState, setAlert] = useState({
     open: false,
@@ -42,6 +43,10 @@ export default function EditStudent({ params }) {
       }
       if (!student.age) {
         alert("Please input age");
+        return;
+      }
+      if (!student.address) {
+        alert("Please input address");
         return;
       }
       await studentBackendService.updateStudent(student);
@@ -127,6 +132,24 @@ export default function EditStudent({ params }) {
             />
           </div>
           <div className="mb-4">
+            <label htmlFor="address" className="block text-sm font-semibold">
+              Address
+            </label>
+            <input
+              className="border border-gray-300 px-3 py-2 rounded w-full text-black font-bold"
+              id="address"
+              name="address"
+              type="number"
+              value={student.address}
+              onChange={(e) => {
+                setStudent({
+                  ...student,
+                  address: +e.target.value,
+                });
+              }}
+            />
+          </div>
+          {/* <div className="mb-4">
             <label className="block text-sm font-semibold">Gender</label>
             <div>
               <label htmlFor="rdMale" className="inline-block mr-2">
@@ -164,7 +187,7 @@ export default function EditStudent({ params }) {
                 Female
               </label>
             </div>
-          </div>
+          </div> */}
           <AppButton type="submit" color="black">
             Save
           </AppButton>

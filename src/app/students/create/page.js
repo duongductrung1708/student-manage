@@ -26,13 +26,20 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 });
 
 const validationSchema = yup.object({
-  name: yup.string().required("Name is required"),
+  name: yup
+    .string()
+    .required("Name is required")
+    .max(200, "Input name must be less than 200 characters"),
   age: yup
     .number("Age must be a number")
     .required("Age is required")
-    .min(1, "Age must be greater than 0")
-    .max(100, "Age must be less than 100"),
-  gender: yup.string().required("Gender is required"),
+    .min(18, "Age must be greater than 18")
+    .max(200, "Age must be less than 200"),
+  address: yup
+    .string()
+    .required("Address is required")
+    .max(200, "Input address must be less than 200 characters"),
+  // gender: yup.string().required("Gender is required"),
 });
 
 export default function CreateNewStudent() {
@@ -86,7 +93,8 @@ export default function CreateNewStudent() {
     initialValues: {
       name: "",
       age: "",
-      gender: "M",
+      address: "",
+      // gender: "M",
     },
     validationSchema,
     onSubmit,
@@ -122,7 +130,18 @@ export default function CreateNewStudent() {
           {formik.touched.age && formik.errors.age && (
             <FormHelperText error>{formik.errors.age}</FormHelperText>
           )}
-          <FormControl>
+          <TextField
+            variant="standard"
+            id="address"
+            name="address"
+            label="Address"
+            onChange={formik.handleChange}
+            value={formik.values.address}
+          />
+          {formik.touched.address && formik.errors.address && (
+            <FormHelperText error>{formik.errors.address}</FormHelperText>
+          )}
+          {/* <FormControl>
             <FormLabel id="gender-label">Gender</FormLabel>
             <RadioGroup
               aria-labelledby="gender-label"
@@ -136,7 +155,7 @@ export default function CreateNewStudent() {
               <FormControlLabel value="F" control={<Radio />} label="Female" />
               <FormControlLabel value="M" control={<Radio />} label="Male" />
             </RadioGroup>
-          </FormControl>
+          </FormControl> */}
           <Button type="submit" className="mt-2" disabled={busy}>
             Save
           </Button>

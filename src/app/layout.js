@@ -93,39 +93,7 @@ export default function RootLayout({ children }) {
             </div>
           </div>
         </nav>
-
-        <AppProvider>
-          {/* <AppBar
-            position="sticky"
-            className="my-app-bar bg-gradient-to-r from-black to-white"
-          >
-            <Toolbar>
-              <Container maxWidth="lg">
-                <ButtonGroup variant="text" aria-label="text button group">
-                  <Button className="menu-button">
-                    <Link
-                      href="/"
-                      passHref
-                      className="menu-link home-link text-white text-xl font-bold"
-                    >
-                      Home
-                    </Link>
-                  </Button>
-                  <Button className="menu-button">
-                    <Link
-                      href="/students"
-                      passHref
-                      className="menu-link students-link text-white"
-                    >
-                      Students
-                    </Link>
-                  </Button>
-                </ButtonGroup>
-              </Container>
-            </Toolbar>
-          </AppBar> */}
-          {children}
-        </AppProvider>
+        <AppProvider>{children}</AppProvider>
       </body>
     </html>
   );
