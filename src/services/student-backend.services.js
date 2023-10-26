@@ -12,7 +12,7 @@ const getAuthorizationHeader = async () => {
 const findStudents = async (filters, pagination) => {
   let url = `/api/students?`;
   url += `searchTerm=${encodeURIComponent(filters.searchTerm)}`;
-  url += `&gender=${encodeURIComponent(filters.gender)}`;
+  url += `&address=${encodeURIComponent(filters.address)}`;
   url += `&pageIndex=${encodeURIComponent(pagination.pageIndex)}`;
   url += `&itemsPerPage=${encodeURIComponent(pagination.itemsPerPage)}`;
   const response = await fetch(url, {

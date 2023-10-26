@@ -16,9 +16,9 @@ const findStudents = async (filters, pagination) => {
       s.name.toLowerCase().includes(searchTerm)
     );
   }
-  if (filters.gender) {
+  if (filters.address) {
     filteredStudents = filteredStudents.filter(
-      (s) => s.gender === filters.gender
+      (s) => s.address === filters.address
     );
   }
 

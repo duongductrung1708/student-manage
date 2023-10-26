@@ -14,13 +14,13 @@ const searchStudents = async (req, res) => {
       [Op.like]: `%${req.query.searchTerm}%`,
     };
   }
-  if (req.query.gender?.trim()) {
-    where.gender = {
-      [Op.eq]: req.query.gender,
+  if (req.query.address?.trim()) {
+    where.address = {
+      [Op.eq]: req.query.address,
     };
   }
   const result = await Student.findAll({
-    attributes: ["id", "name", "gender", "age"],
+    attributes: ["id", "name", "address", "age"],
     where,
     offset: query.pageIndex * query.itemsPerPage,
     limit: query.itemsPerPage,
@@ -41,7 +41,7 @@ const createStudent = async (req, res) => {
   const newRecord = await Student.create({
     name: newStudent.name,
     age: newStudent.age,
-    gender: newStudent.gender,
+    address: newStudent.address,
   });
   res.status(200).json({
     id: newRecord.id,

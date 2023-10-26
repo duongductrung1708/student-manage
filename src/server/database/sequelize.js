@@ -26,7 +26,7 @@ export const Student = sequelize.define(
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    gender: {
+    address: {
       type: DataTypes.STRING,
       allowNull: false,
     },

@@ -32,7 +32,7 @@ const update = async (req, res) => {
   student.update({
     name: updatedData.name,
     age: updatedData.age,
-    gender: updatedData.gender,
+    address: updatedData.address,
   });
   res.status(200).json({});
 };
