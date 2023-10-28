@@ -2,7 +2,13 @@ import { getAuth } from "firebase/auth";
 
 const getAuthorizationHeader = async () => {
   const auth = getAuth();
-  const token = await auth.currentUser?.getIdToken();
+  const user = auth.currentUser;
+
+  if (!user) {
+    throw new Error("User is not authenticated");
+  }
+
+  const token = await user.getIdToken();
   console.log(token);
   return {
     authorization: `Bearer ${token}`,
@@ -12,7 +18,6 @@ const getAuthorizationHeader = async () => {
 const findStudents = async (filters, pagination) => {
   let url = `/api/students?`;
   url += `searchTerm=${encodeURIComponent(filters.searchTerm)}`;
-  url += `&address=${encodeURIComponent(filters.address)}`;
   url += `&pageIndex=${encodeURIComponent(pagination.pageIndex)}`;
   url += `&itemsPerPage=${encodeURIComponent(pagination.itemsPerPage)}`;
   const response = await fetch(url, {

@@ -37,15 +37,23 @@ const searchStudents = async (req, res) => {
 };
 
 const createStudent = async (req, res) => {
-  const newStudent = JSON.parse(req.body);
-  const newRecord = await Student.create({
-    name: newStudent.name,
-    age: newStudent.age,
-    address: newStudent.address,
-  });
-  res.status(200).json({
-    id: newRecord.id,
-  });
+  try {
+    const newStudent = JSON.parse(req.body);
+
+    const newRecord = await Student.create({
+      name: newStudent.name,
+      age: newStudent.age,
+      address: newStudent.address,
+    });
+
+    res.status(200).json({
+      id: newRecord.id,
+    });
+  } catch (error) {
+    res.status(400).json({
+      message: "Bad Request",
+    });
+  }
 };
 
 export default async function handler(req, res) {
@@ -56,6 +64,7 @@ export default async function handler(req, res) {
     });
     return;
   }
+
   if (req.method === "POST") {
     return createStudent(req, res);
   } else if (req.method === "GET") {

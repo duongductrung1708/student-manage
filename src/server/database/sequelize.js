@@ -28,7 +28,7 @@ export const Student = sequelize.define(
     },
     address: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
   },
   {
