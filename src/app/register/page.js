@@ -5,7 +5,14 @@ import { useState } from "react";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import { Alert, IconButton, InputAdornment, Snackbar } from "@mui/material";
+import {
+  Alert,
+  Card,
+  IconButton,
+  InputAdornment,
+  Snackbar,
+  Typography,
+} from "@mui/material";
 import FormHelperText from "@mui/material/FormHelperText";
 import { useFormik } from "formik";
 import * as yup from "yup";
@@ -70,76 +77,94 @@ export default function Register() {
     onSubmit,
   });
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-black to-white text-white">
-      <div className="bg-zinc-300 p-8 rounded shadow-lg w-96">
-        <h2 className="text-2xl font-bold mb-4 text-black">Register</h2>
-        <div className="flex flex-col gap-3">
-          <form onSubmit={formik.handleSubmit} className="flex flex-col gap-3">
-            <TextField
-              id="email"
-              name="email"
-              label="Email"
-              variant="standard"
-              onChange={formik.handleChange}
-              value={formik.values.email}
-            />
-            {formik.touched.email &&
-              formik.errors.email &&
-              formik.errors.email && (
-                <FormHelperText error>{formik.errors.email}</FormHelperText>
-              )}
-            <TextField
-              id="password"
-              name="password"
-              label="Password"
-              variant="standard"
-              type={showPassword ? "text" : "password"}
-              onChange={formik.handleChange}
-              value={formik.values.password}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton
-                      onClick={() => setShowPassword(!showPassword)}
-                      size="small"
-                      tabIndex={-1}
-                    >
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-            />
-            {formik.touched.email &&
-              formik.errors.password &&
-              formik.errors.password && (
-                <FormHelperText error>{formik.errors.password}</FormHelperText>
-              )}
-            <Button
-              variant="contained"
-              type="submit"
-              // onClick={onSubmit}
-              color="primary"
+    <div
+      className="min-h-screen flex items-center justify-center text-white"
+      style={{
+        background:
+          "linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(83,9,121,1) 49%, rgba(134,0,255,1) 100%);",
+      }}
+    >
+      <div>
+        <Card
+          className="w-96 rounded-xl p-8 text-center glass-background dark:glass-background-dark"
+          elevation={8}
+        >
+          <Typography className="text-2xl font-bold mb-4 text-black">
+            Register
+          </Typography>
+          <div className="flex flex-col gap-3">
+            <form
+              onSubmit={formik.handleSubmit}
+              className="flex flex-col gap-3"
             >
-              Register
-            </Button>
-          </form>
-          {alertState.open && (
-            <Snackbar
-              open={alertState.open}
-              autoHideDuration={3000}
-              onClose={handleClose}
-            >
-              <Alert
-                onClose={handleClose}
-                severity={alertState.severity}
-                sx={{ width: "100%" }}
+              <TextField
+                id="email"
+                name="email"
+                label="Email"
+                variant="standard"
+                onChange={formik.handleChange}
+                value={formik.values.email}
+              />
+              {formik.touched.email &&
+                formik.errors.email &&
+                formik.errors.email && (
+                  <FormHelperText error>{formik.errors.email}</FormHelperText>
+                )}
+              <TextField
+                id="password"
+                name="password"
+                label="Password"
+                variant="standard"
+                type={showPassword ? "text" : "password"}
+                onChange={formik.handleChange}
+                value={formik.values.password}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        onClick={() => setShowPassword(!showPassword)}
+                        size="small"
+                        tabIndex={-1}
+                      >
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+              />
+              {formik.touched.email &&
+                formik.errors.password &&
+                formik.errors.password && (
+                  <FormHelperText error>
+                    {formik.errors.password}
+                  </FormHelperText>
+                )}
+              <Button
+                variant="contained"
+                type="submit"
+                // onClick={onSubmit}
+                color="primary"
               >
-                {alertState.message}
-              </Alert>
-            </Snackbar>
-          )}
-        </div>
+                Register
+              </Button>
+            </form>
+            {alertState.open && (
+              <Snackbar
+                open={alertState.open}
+                autoHideDuration={3000}
+                onClose={handleClose}
+              >
+                <Alert
+                  onClose={handleClose}
+                  severity={alertState.severity}
+                  sx={{ width: "100%" }}
+                >
+                  {alertState.message}
+                </Alert>
+              </Snackbar>
+            )}
+          </div>
+        </Card>
       </div>
     </div>
   );

@@ -1,6 +1,5 @@
 "use client";
 
-import { AppButton } from "@app/components/app-button";
 import React from "react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -9,17 +8,15 @@ import MuiAlert from "@mui/material/Alert";
 import * as yup from "yup";
 import {
   Button,
-  FormControl,
-  FormControlLabel,
+  Card,
   FormHelperText,
-  FormLabel,
-  Radio,
-  RadioGroup,
   Snackbar,
   TextField,
+  Typography,
 } from "@mui/material";
 import { sleep } from "@app/utils/sleep";
 import { studentBackendService } from "@app/services/student-backend.services";
+import "../css/style.css";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -101,47 +98,51 @@ export default function CreateNewStudent() {
   });
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-black to-white text-white">
-      <div className="bg-zinc-300 p-8 rounded shadow-lg w-96">
-        <h2 className="text-2xl font-bold mb-4 text-black">
-          Create New Student
-        </h2>
-        <form onSubmit={formik.handleSubmit} className="flex flex-col gap-3">
-          <TextField
-            variant="standard"
-            id="name"
-            name="name"
-            label="Name"
-            onChange={formik.handleChange}
-            value={formik.values.name}
-            autoFocus
-          />
-          {formik.touched.name && formik.errors.name && (
-            <FormHelperText error>{formik.errors.name}</FormHelperText>
-          )}
-          <TextField
-            variant="standard"
-            id="age"
-            name="age"
-            label="Age"
-            onChange={formik.handleChange}
-            value={formik.values.age}
-          />
-          {formik.touched.age && formik.errors.age && (
-            <FormHelperText error>{formik.errors.age}</FormHelperText>
-          )}
-          <TextField
-            variant="standard"
-            id="address"
-            name="address"
-            label="Address"
-            onChange={formik.handleChange}
-            value={formik.values.address}
-          />
-          {formik.touched.address && formik.errors.address && (
-            <FormHelperText error>{formik.errors.address}</FormHelperText>
-          )}
-          {/* <FormControl>
+    <div className="bg-gradient min-h-screen flex items-center justify-center text-white">
+      <div>
+        <Card
+          className="w-96 rounded-xl p-8 text-center glass-background dark:glass-background-dark"
+          elevation={8}
+        >
+          <Typography className="text-2xl font-bold mb-4 text-black">
+            Create Student
+          </Typography>
+          <form onSubmit={formik.handleSubmit} className="flex flex-col gap-3">
+            <TextField
+              variant="standard"
+              id="name"
+              name="name"
+              label="Name"
+              onChange={formik.handleChange}
+              value={formik.values.name}
+              autoFocus
+            />
+            {formik.touched.name && formik.errors.name && (
+              <FormHelperText error>{formik.errors.name}</FormHelperText>
+            )}
+            <TextField
+              variant="standard"
+              id="age"
+              name="age"
+              label="Age"
+              onChange={formik.handleChange}
+              value={formik.values.age}
+            />
+            {formik.touched.age && formik.errors.age && (
+              <FormHelperText error>{formik.errors.age}</FormHelperText>
+            )}
+            <TextField
+              variant="standard"
+              id="address"
+              name="address"
+              label="Address"
+              onChange={formik.handleChange}
+              value={formik.values.address}
+            />
+            {formik.touched.address && formik.errors.address && (
+              <FormHelperText error>{formik.errors.address}</FormHelperText>
+            )}
+            {/* <FormControl>
             <FormLabel id="gender-label">Gender</FormLabel>
             <RadioGroup
               aria-labelledby="gender-label"
@@ -156,25 +157,26 @@ export default function CreateNewStudent() {
               <FormControlLabel value="M" control={<Radio />} label="Male" />
             </RadioGroup>
           </FormControl> */}
-          <Button type="submit" className="mt-2" disabled={busy}>
-            Save
-          </Button>
-        </form>
-        {alertState.open && (
-          <Snackbar
-            open={alertState.open}
-            autoHideDuration={3000}
-            onClose={handleClose}
-          >
-            <Alert
+            <Button type="submit" className="mt-2" disabled={busy}>
+              Save
+            </Button>
+          </form>
+          {alertState.open && (
+            <Snackbar
+              open={alertState.open}
+              autoHideDuration={3000}
               onClose={handleClose}
-              severity={alertState.severity}
-              sx={{ width: "100%" }}
             >
-              {alertState.message}
-            </Alert>
-          </Snackbar>
-        )}
+              <Alert
+                onClose={handleClose}
+                severity={alertState.severity}
+                sx={{ width: "100%" }}
+              >
+                {alertState.message}
+              </Alert>
+            </Snackbar>
+          )}
+        </Card>
       </div>
     </div>
   );

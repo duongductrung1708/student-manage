@@ -1,14 +1,13 @@
 import { getAuth } from "firebase/auth";
 
-const getAuthorizationHeader = async () => {
+export const clearAccessToken = () => {
+  accessToken = "";
+  expiresAt = 0;
+};
+
+export const getAuthorizationHeader = async () => {
   const auth = getAuth();
-  const user = auth.currentUser;
-
-  if (!user) {
-    throw new Error("User is not authenticated");
-  }
-
-  const token = await user.getIdToken();
+  const token = await auth.currentUser?.getIdToken();
   console.log(token);
   return {
     authorization: `Bearer ${token}`,

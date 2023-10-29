@@ -3,10 +3,12 @@
 import { AppButton } from "@app/components/app-button";
 import { AppPagination } from "@app/components/app-pagination";
 import { useRouter } from "next/navigation";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDebounce } from "use-debounce";
 import { Alert, Snackbar } from "@mui/material";
 import { studentBackendService } from "@app/services/student-backend.services";
+import "./css/style.css";
+
 export default function Students() {
   const [searchResult, setSearchResult] = useState({
     data: [],
@@ -107,9 +109,11 @@ export default function Students() {
 
   return (
     <>
-      <div className="bg-gradient-to-r from-black to-white text-white min-h-screen">
+      <div className="bg-gradient min-h-screen">
         <div className="container mx-auto py-4">
-          <div className="text-2xl font-bold text-align-center">Students</div>
+          <div className="text-2xl font-bold text-align-center text-white">
+            Students
+          </div>
           <section className="flex items-center w-full">
             <div className="w-full">
               <div className="relative bg-white shadow-md dark:bg-gray-800 sm:rounded-lg">
@@ -173,64 +177,6 @@ export default function Students() {
                       </svg>
                       Add Student
                     </AppButton>
-                    {/* <div className="mb-4">
-                      <label className="block text-sm font-semibold">
-                        Gender
-                      </label>
-                      <div>
-                        <label htmlFor="rdAll" className="inline-block mr-2">
-                          <input
-                            id="rdAll"
-                            name="gender"
-                            type="radio"
-                            className="mr-2"
-                            value=""
-                            checked={filters.gender === ""}
-                            onChange={(e) => {
-                              setFilters({
-                                ...filters,
-                                gender: e.target.value,
-                              });
-                            }}
-                          />
-                          All
-                        </label>
-                        <label htmlFor="rdMale" className="inline-block mr-2">
-                          <input
-                            id="rdMale"
-                            name="gender"
-                            type="radio"
-                            className="mr-2"
-                            value="M"
-                            checked={filters.gender === "M"}
-                            onChange={(e) => {
-                              setFilters({
-                                ...filters,
-                                gender: e.target.value,
-                              });
-                            }}
-                          />
-                          Male
-                        </label>
-                        <label htmlFor="rdFemale" className="inline-block">
-                          <input
-                            id="rdFemale"
-                            name="gender"
-                            type="radio"
-                            className="mr-2"
-                            value="F"
-                            checked={filters.gender === "F"}
-                            onChange={(e) => {
-                              setFilters({
-                                ...filters,
-                                gender: e.target.value,
-                              });
-                            }}
-                          />
-                          Female
-                        </label>
-                      </div>
-                    </div> */}
                   </div>
                 </div>
               </div>

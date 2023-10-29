@@ -11,8 +11,15 @@ import MuiAlert from "@mui/material/Alert";
 import { sleep } from "@app/utils/sleep";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { FormHelperText, IconButton, InputAdornment } from "@mui/material";
+import {
+  Card,
+  FormHelperText,
+  IconButton,
+  InputAdornment,
+  Typography,
+} from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import Link from "next/link";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -79,71 +86,90 @@ export default function SignIn() {
   });
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-black to-white text-white">
-      <div className="bg-zinc-300 p-8 rounded shadow-lg w-96">
-        <h2 className="text-2xl font-bold mb-4 text-black">Sign In</h2>
-        <form onSubmit={formik.handleSubmit} className="flex flex-col gap-3">
-          <TextField
-            id="email"
-            name="email"
-            label="Email"
-            variant="standard"
-            onChange={formik.handleChange}
-            value={formik.values.email}
-            error={formik.touched.email && Boolean(formik.errors.email)}
-          />
-          {formik.touched.email &&
-            formik.errors.email &&
-            formik.errors.email && (
-              <FormHelperText error>{formik.errors.email}</FormHelperText>
-            )}
-          <TextField
-            id="password"
-            name="password"
-            label="Password"
-            variant="standard"
-            type={showPassword ? "text" : "password"}
-            onChange={formik.handleChange}
-            value={formik.values.password}
-            error={formik.touched.password && Boolean(formik.errors.password)}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton
-                    onClick={() => setShowPassword(!showPassword)}
-                    size="small"
-                    tabIndex={-1}
-                  >
-                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-          />
-          {formik.touched.email &&
-            formik.errors.password &&
-            formik.errors.password && (
-              <FormHelperText error>{formik.errors.password}</FormHelperText>
-            )}
-          <Button variant="contained" type="submit" color="primary">
-            Sign in
-          </Button>
-          {alertState.open && (
-            <Snackbar
-              open={alertState.open}
-              autoHideDuration={3000}
-              onClose={handleClose}
+    <div
+      className="min-h-screen flex items-center justify-center text-white"
+      style={{
+        background:
+          "linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(83,9,121,1) 49%, rgba(134,0,255,1) 100%);",
+      }}
+    >
+      <div>
+        <Card
+          className="w-96 rounded-xl p-8 text-center glass-background dark:glass-background-dark"
+          elevation={8}
+        >
+          <Typography className="text-2xl font-bold mb-4 text-black">
+            Sign In
+          </Typography>
+          <form onSubmit={formik.handleSubmit} className="flex flex-col gap-3">
+            <TextField
+              id="email"
+              name="email"
+              label="Email"
+              variant="standard"
+              onChange={formik.handleChange}
+              value={formik.values.email}
+              error={formik.touched.email && Boolean(formik.errors.email)}
+            />
+            {formik.touched.email &&
+              formik.errors.email &&
+              formik.errors.email && (
+                <FormHelperText error>{formik.errors.email}</FormHelperText>
+              )}
+            <TextField
+              id="password"
+              name="password"
+              label="Password"
+              variant="standard"
+              type={showPassword ? "text" : "password"}
+              onChange={formik.handleChange}
+              value={formik.values.password}
+              error={formik.touched.password && Boolean(formik.errors.password)}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={() => setShowPassword(!showPassword)}
+                      size="small"
+                      tabIndex={-1}
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+            {formik.touched.email &&
+              formik.errors.password &&
+              formik.errors.password && (
+                <FormHelperText error>{formik.errors.password}</FormHelperText>
+              )}
+            <a
+              href="/forgot-password"
+              className="text-primary-800 dark:text-primary-200 text-sm flex items-start"
             >
-              <Alert
+              Forgot Password?
+            </a>
+            <Button variant="contained" type="submit" color="primary">
+              Sign in
+            </Button>
+            {alertState.open && (
+              <Snackbar
+                open={alertState.open}
+                autoHideDuration={3000}
                 onClose={handleClose}
-                severity={alertState.severity}
-                sx={{ width: "100%" }}
               >
-                {alertState.message}
-              </Alert>
-            </Snackbar>
-          )}
-        </form>
+                <Alert
+                  onClose={handleClose}
+                  severity={alertState.severity}
+                  sx={{ width: "100%" }}
+                >
+                  {alertState.message}
+                </Alert>
+              </Snackbar>
+            )}
+          </form>
+        </Card>
       </div>
     </div>
   );

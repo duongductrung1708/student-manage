@@ -2,9 +2,10 @@
 
 import { AppButton } from "@app/components/app-button";
 import { studentBackendService } from "@app/services/student-backend.services";
-import { Alert, Snackbar } from "@mui/material";
+import { Alert, Card, Snackbar, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import "../css/style.css";
 
 export default function EditStudent({ params }) {
   console.log(params.id);
@@ -78,78 +79,84 @@ export default function EditStudent({ params }) {
     return <div></div>;
   }
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-black to-white text-white">
-      <div className="bg-transparent p-8 rounded shadow-lg w-96">
-        <h2 className="text-2xl font-bold mb-4">Edit Student</h2>
-        <form onSubmit={onSubmit}>
-          <div className="mb-4">
-            <label htmlFor="id" className="block text-sm font-semibold">
-              Id
-            </label>
-            <input
-              className="border border-gray-300 px-3 py-2 rounded w-full font-bold text-black"
-              type="text"
-              name="id"
-              id="id"
-              value={student.id}
-              disabled
-            />
-          </div>
-          <div className="mb-4">
-            <label htmlFor="name" className="block text-sm font-semibold">
-              Name
-            </label>
-            <input
-              className="border border-gray-300 px-3 py-2 rounded w-full font-bold text-black"
-              type="text"
-              name="name"
-              id="name"
-              value={student.name}
-              onChange={(e) => {
-                setStudent({
-                  ...student,
-                  name: e.target.value,
-                });
-              }}
-            />
-          </div>
-          <div className="mb-4">
-            <label htmlFor="age" className="block text-sm font-semibold">
-              Age
-            </label>
-            <input
-              className="border border-gray-300 px-3 py-2 rounded w-full text-black font-bold"
-              id="age"
-              name="age"
-              type="number"
-              value={student.age}
-              onChange={(e) => {
-                setStudent({
-                  ...student,
-                  age: +e.target.value,
-                });
-              }}
-            />
-          </div>
-          <div className="mb-4">
-            <label htmlFor="address" className="block text-sm font-semibold">
-              Address
-            </label>
-            <input
-              className="border border-gray-300 px-3 py-2 rounded w-full text-black font-bold"
-              id="address"
-              name="address"
-              type="number"
-              value={student.address}
-              onChange={(e) => {
-                setStudent({
-                  ...student,
-                  address: +e.target.value,
-                });
-              }}
-            />
-          </div>
-          {/* <div className="mb-4">
+    <div className="bg-gradient min-h-screen flex items-center justify-center text-white">
+      <div>
+        <Card
+          className="w-96 rounded-xl p-8 text-center glass-background dark:glass-background-dark"
+          elevation={8}
+        >
+          <Typography className="text-2xl font-bold mb-4 text-black">
+            Edit Student
+          </Typography>
+          <form onSubmit={onSubmit}>
+            <div className="mb-4">
+              <label htmlFor="id" className="block text-sm font-semibold">
+                Id
+              </label>
+              <input
+                className="border border-gray-300 px-3 py-2 rounded w-full font-bold text-black"
+                type="text"
+                name="id"
+                id="id"
+                value={student.id}
+                disabled
+              />
+            </div>
+            <div className="mb-4">
+              <label htmlFor="name" className="block text-sm font-semibold">
+                Name
+              </label>
+              <input
+                className="border border-gray-300 px-3 py-2 rounded w-full font-bold text-black"
+                type="text"
+                name="name"
+                id="name"
+                value={student.name}
+                onChange={(e) => {
+                  setStudent({
+                    ...student,
+                    name: e.target.value,
+                  });
+                }}
+              />
+            </div>
+            <div className="mb-4">
+              <label htmlFor="age" className="block text-sm font-semibold">
+                Age
+              </label>
+              <input
+                className="border border-gray-300 px-3 py-2 rounded w-full text-black font-bold"
+                id="age"
+                name="age"
+                type="number"
+                value={student.age}
+                onChange={(e) => {
+                  setStudent({
+                    ...student,
+                    age: +e.target.value,
+                  });
+                }}
+              />
+            </div>
+            <div className="mb-4">
+              <label htmlFor="address" className="block text-sm font-semibold">
+                Address
+              </label>
+              <input
+                className="border border-gray-300 px-3 py-2 rounded w-full text-black font-bold"
+                id="address"
+                name="address"
+                type="number"
+                value={student.address}
+                onChange={(e) => {
+                  setStudent({
+                    ...student,
+                    address: +e.target.value,
+                  });
+                }}
+              />
+            </div>
+            {/* <div className="mb-4">
             <label className="block text-sm font-semibold">Gender</label>
             <div>
               <label htmlFor="rdMale" className="inline-block mr-2">
@@ -188,25 +195,26 @@ export default function EditStudent({ params }) {
               </label>
             </div>
           </div> */}
-          <AppButton type="submit" color="black">
-            Save
-          </AppButton>
-        </form>
-        {alertState.open && (
-          <Snackbar
-            open={alertState.open}
-            autoHideDuration={3000}
-            onClose={handleClose}
-          >
-            <Alert
+            <AppButton type="submit" color="black">
+              Save
+            </AppButton>
+          </form>
+          {alertState.open && (
+            <Snackbar
+              open={alertState.open}
+              autoHideDuration={3000}
               onClose={handleClose}
-              severity={alertState.severity}
-              sx={{ width: "100%" }}
             >
-              {alertState.message}
-            </Alert>
-          </Snackbar>
-        )}
+              <Alert
+                onClose={handleClose}
+                severity={alertState.severity}
+                sx={{ width: "100%" }}
+              >
+                {alertState.message}
+              </Alert>
+            </Snackbar>
+          )}
+        </Card>
       </div>
     </div>
   );

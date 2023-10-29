@@ -13,10 +13,15 @@ export const AppGuard = ({ children }) => {
   if (!user.id) {
     return (
       <>
-        <div>Authentication required. Please sign in</div>
-        <AppButton className="mr-2" color="black" onClick={signIn}>
-          Sign in
-        </AppButton>
+        <div className="bg-gray-100 p-4 text-center">
+          Authentication required. Please{" "}
+          <a
+            className="text-blue-500 cursor-pointer hover:underline text-decoration-none"
+            href="/sign-in"
+          >
+            Sign in
+          </a>
+        </div>
       </>
     );
   }
