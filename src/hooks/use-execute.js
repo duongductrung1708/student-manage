@@ -5,12 +5,11 @@ import { useDispatch } from "react-redux";
 
 export const useExecute = () => {
   const [busy, setBusy] = useState(false);
-  const dispatch = useDispatch();
-
+  const { setNotification } = useDispatch();
   const execute = useCallback(
     async (action) => {
       try {
-        setBusy && setBusy(true);
+        setBusy?.(true);
         await action();
         return {
           success: true,
@@ -35,7 +34,7 @@ export const useExecute = () => {
         } else if (error.code === "auth/too-many-requests") {
           errorMessage = "Too many requests. Please try again later";
         } else if (error.code === "auth/invalid-action-code") {
-          errorMessage = "Invalid action code. It may already have been used";
+          errorMessage = "Invalid action code. It may have already been used";
         } else if (
           error.code === "auth/popup-closed-by-user" ||
           error.code === "auth/cancelled-popup-request"
@@ -44,7 +43,7 @@ export const useExecute = () => {
         }
 
         if (showNotification) {
-          dispatch.notification.setNotification({
+          setNotification({
             open: true,
             severity: "error",
             message: errorMessage,
@@ -54,10 +53,10 @@ export const useExecute = () => {
           success: false,
         };
       } finally {
-        setBusy && setBusy(false);
+        setBusy?.(false);
       }
     },
-    [setBusy, dispatch]
+    [setBusy, setNotification]
   );
 
   return { busy, execute };

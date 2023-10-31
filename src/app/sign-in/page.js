@@ -2,7 +2,6 @@
 
 import React from "react";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
@@ -18,8 +17,9 @@ import {
   InputAdornment,
   Typography,
 } from "@mui/material";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
-import Link from "next/link";
+import { Google, Visibility, VisibilityOff } from "@mui/icons-material";
+import { authService } from "@app/services/auth.service";
+import { useExecute } from "@app/hooks/use-execute";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -31,13 +31,14 @@ const validationSchema = yup.object({
 });
 
 export default function SignIn() {
-  const router = useRouter();
+  const { busy } = useExecute();
   const [alertState, setAlert] = useState({
     open: false,
     message: "",
     severity: "success",
   });
   const [showPassword, setShowPassword] = useState(false);
+  const [currentAction, setCurrentAction] = useState("sign-in-google");
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -61,7 +62,7 @@ export default function SignIn() {
         severity: "success",
       });
       await sleep(1000);
-      router.push("/");
+      window.location.href = "/";
     } catch (e) {
       let errorMessage = e.message;
       if (e.code === "auth/invalid-login-credentials") {
@@ -73,6 +74,21 @@ export default function SignIn() {
         severity: "error",
       });
       console.error(e);
+    }
+  };
+
+  const signInWithGoogle = async () => {
+    try {
+      setCurrentAction("sign-in-google");
+      await authService.signUpWithGoogle();
+      window.location.href = "/";
+    } catch (error) {
+      setAlert({
+        open: true,
+        message: error.message,
+        severity: "error",
+      });
+      console.error(error);
     }
   };
 
@@ -152,6 +168,20 @@ export default function SignIn() {
             </a>
             <Button variant="contained" type="submit" color="primary">
               Sign in
+            </Button>
+            <div className="">------------------- Or -------------------</div>
+            <Button
+              variant="contained"
+              color="inherit"
+              fullWidth
+              className="mb-3 bg-red-500 hover:bg-red-600 text-white"
+              startIcon={<Google />}
+              onClick={signInWithGoogle}
+              disabled={busy}
+            >
+              {busy && currentAction === "sign-in-google"
+                ? "Processing..."
+                : "Sign In with Google"}
             </Button>
             {alertState.open && (
               <Snackbar

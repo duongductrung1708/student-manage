@@ -2,7 +2,6 @@
 
 import { useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
-import { AppButton } from "./app-button";
 
 export const AppGuard = ({ children }) => {
   const router = useRouter();

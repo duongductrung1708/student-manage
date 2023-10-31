@@ -2,7 +2,7 @@ import React, { forwardRef } from "react";
 import { Button } from "@mui/material";
 import clsx from "clsx";
 
-const MainButton = forwardRef((props, ref) => {
+const MainButton = forwardRef(function MainButton(props, ref) {
   const { children, className, ...otherProps } = props;
 
   return (

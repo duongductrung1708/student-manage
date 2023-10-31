@@ -1,4 +1,4 @@
-import admin from "firebase-admin";
+import admin, { auth } from "firebase-admin";
 
 const serviceAccount = {
   type: "service_account",
@@ -17,28 +17,14 @@ const serviceAccount = {
   universe_domain: "googleapis.com",
 };
 
-let app;
-
-const getApp = () => {
-  if (!app) {
-    try {
-      app = admin.initializeApp({
-        credential: admin.credential.cert(serviceAccount),
-      });
-      console.log("Firebase Initialized.");
-    } catch (error) {
-      if (!/already exists/u.test(error.message)) {
-        console.error("Firebase admin initialization error", error.stack);
-      }
-    }
-  }
-  return app;
-};
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+});
 
 export const validateRequest = async (req) => {
   try {
     const token = req.headers.authorization.split(" ")[1];
-    const decodedToken = await getApp().auth().verifyIdToken(token);
+    const decodedToken = await auth().verifyIdToken(token);
     return decodedToken;
   } catch (error) {
     console.log(error);

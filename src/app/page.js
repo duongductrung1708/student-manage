@@ -1,7 +1,6 @@
 "use client";
 
 import { getAuth, signOut } from "firebase/auth";
-import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
 import Button from "@mui/material/Button";
 
@@ -21,6 +20,33 @@ export default function Home() {
     const auth = getAuth();
     signOut(auth);
   };
+  if (!user.loaded) {
+    return (
+      <main
+        className="sticky top-0 z-50 min-h-screen text-white p-10"
+        style={{
+          background:
+            "linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(83,9,121,1) 49%, rgba(134,0,255,1) 100%);",
+        }}
+      >
+        <div className="border border-blue-300 shadow rounded-md p-4 max-w-sm w-full mx-auto">
+          <div className="animate-pulse flex space-x-4">
+            <div className="rounded-full bg-slate-700 h-10 w-10"></div>
+            <div className="flex-1 space-y-6 py-1">
+              <div className="h-2 bg-slate-700 rounded"></div>
+              <div className="space-y-3">
+                <div className="grid grid-cols-3 gap-4">
+                  <div className="h-2 bg-slate-700 rounded col-span-2"></div>
+                  <div className="h-2 bg-slate-700 rounded col-span-1"></div>
+                </div>
+                <div className="h-2 bg-slate-700 rounded"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    );
+  }
   return (
     <main
       className="sticky top-0 z-50 min-h-screen text-white p-10"

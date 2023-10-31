@@ -6,6 +6,8 @@ import {
   sendEmailVerification,
   applyActionCode,
   updatePassword,
+  GoogleAuthProvider,
+  signInWithPopup,
 } from "firebase/auth";
 
 let forAuthProcessApp;
@@ -46,6 +48,26 @@ const verifyEmail = async (actionCode) => {
   await applyActionCode(getAuth(), actionCode);
 };
 
+const signUpWithGoogle = async () => {
+  const provider = new GoogleAuthProvider();
+  try {
+    const result = await signInWithPopup(getAuth(forAuthProcessApp), provider);
+    console.log("Google sign-in successful", result.user);
+  } catch (error) {
+    console.error("Google sign-in error", error);
+  }
+};
+
+const signInWithGoogle = async () => {
+  const provider = new GoogleAuthProvider();
+  try {
+    const result = await signInWithPopup(getAuth(forAuthProcessApp), provider);
+    console.log("Google sign-in successful", result.user);
+  } catch (error) {
+    console.error("Google sign-in error", error);
+  }
+};
+
 export const authService = {
   initializeAuthProcessApp,
   resetPassword,
@@ -53,4 +75,6 @@ export const authService = {
   requestEmailVerification,
   verifyEmail,
   changePassword,
+  signInWithGoogle,
+  signUpWithGoogle,
 };

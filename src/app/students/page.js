@@ -8,6 +8,9 @@ import { useDebounce } from "use-debounce";
 import { Alert, Snackbar } from "@mui/material";
 import { studentBackendService } from "@app/services/student-backend.services";
 import "./css/style.css";
+import "./css/seach.css";
+import "bootstrap-icons/font/bootstrap-icons.css";
+import { user } from "@app/store/user.model";
 
 export default function Students() {
   const [searchResult, setSearchResult] = useState({
@@ -16,7 +19,6 @@ export default function Students() {
   });
   const [filters, setFilters] = useState({
     searchTerm: "",
-    gender: "",
   });
   const [searchTermDebounced] = useDebounce(filters.searchTerm, 300);
   const [pagination, setPagination] = useState({
@@ -49,16 +51,6 @@ export default function Students() {
   const editStudent = (id) => {
     router.push(`/students/${id}`);
   };
-
-  // const getGender = (value) => {
-  //   if (value === "M") {
-  //     return "Male";
-  //   }
-  //   if (value === "F") {
-  //     return "Female";
-  //   }
-  //   return "";
-  // };
 
   const searchStudents = async () => {
     try {
@@ -101,11 +93,41 @@ export default function Students() {
       pageIndex: 0,
     });
     searchStudents();
-  }, [filters.gender, searchTermDebounced]);
+  }, [searchTermDebounced]);
 
   useEffect(() => {
     searchStudents();
   }, [pagination.pageIndex]);
+
+  // const { loaded } = user.state;
+
+  // if (!loaded) {
+  //   return (
+  //     <main
+  //       className="sticky top-0 z-50 min-h-screen text-white p-10"
+  //       style={{
+  //         background:
+  //           "linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(83,9,121,1) 49%, rgba(134,0,255,1) 100%);",
+  //       }}
+  //     >
+  //       <div className="border border-blue-300 shadow rounded-md p-4 max-w-sm w-full mx-auto">
+  //         <div className="animate-pulse flex space-x-4">
+  //           <div className="rounded-full bg-slate-700 h-10 w-10"></div>
+  //           <div className="flex-1 space-y-6 py-1">
+  //             <div className="h-2 bg-slate-700 rounded"></div>
+  //             <div className="space-y-3">
+  //               <div className="grid grid-cols-3 gap-4">
+  //                 <div className="h-2 bg-slate-700 rounded col-span-2"></div>
+  //                 <div className="h-2 bg-slate-700 rounded col-span-1"></div>
+  //               </div>
+  //               <div className="h-2 bg-slate-700 rounded"></div>
+  //             </div>
+  //           </div>
+  //         </div>
+  //       </div>
+  //     </main>
+  //   );
+  // }
 
   return (
     <>
@@ -114,76 +136,52 @@ export default function Students() {
           <div className="text-2xl font-bold text-align-center text-white">
             Students
           </div>
-          <section className="flex items-center w-full">
-            <div className="w-full">
-              <div className="relative bg-white shadow-md dark:bg-gray-800 sm:rounded-lg">
-                <div className="flex flex-col items-center justify-between p-4 space-y-3 md:flex-row md:space-y-0 md:space-x-4">
-                  <div className="w-full md:w-1/2">
-                    <form className="flex items-center">
-                      <label htmlFor="simple-search" className="sr-only">
-                        Search
-                      </label>
-                      <div className="relative w-full">
-                        <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                          <svg
-                            aria-hidden="true"
-                            className="w-5 h-5 text-gray-500 dark:text-gray-400"
-                            fill="currentColor"
-                            viewBox="0 0 20 20"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <path
-                              fillRule="evenodd"
-                              d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                              clipRule="evenodd"
-                            />
-                          </svg>
-                        </div>
-                        <input
-                          type="text"
-                          id="simple-search"
-                          className="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                          placeholder="Search"
-                          required=""
-                          value={filters.searchTerm}
-                          onChange={(e) => {
-                            setFilters({
-                              ...filters,
-                              searchTerm: e.target.value,
-                            });
-                          }}
-                        />
-                      </div>
-                    </form>
-                  </div>
-                  <div className="flex flex-col items-stretch justify-end flex-shrink-0 w-full space-y-2 md:w-auto md:flex-row md:space-y-0 md:items-center md:space-x-3">
-                    <AppButton
-                      onClick={createNew}
-                      type="button"
-                      className="flex items-center justify-center px-4 py-2 text-sm font-medium text-white rounded-lg bg-gray-800 hover:bg-gray-800 focus:ring-4 focus:ring-primary-300 dark:bg-gray-600 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-primary-800"
-                    >
-                      <svg
-                        className="h-3.5 w-3.5 mr-2"
-                        fill="currentColor"
-                        viewbox="0 0 20 20"
-                        xmlns="http://www.w3.org/2000/svg"
-                        aria-hidden="true"
-                      >
-                        <path
-                          clipRule="evenodd"
-                          fillRule="evenodd"
-                          d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
-                        />
-                      </svg>
-                      Add Student
-                    </AppButton>
-                  </div>
-                </div>
+          <section className="flex flex-col items-stretch justify-end flex-shrink-0 w-full space-y-2 md:w-auto md:flex-row md:space-y-0 md:items-center md:space-x-3">
+            <div className="w-full flex justify-between">
+              <div class="flex items-center w-full">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="w-6 h-6 mr-2 text-blue-600"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                  />
+                </svg>
+                <input
+                  type="text"
+                  name="name"
+                  placeholder="Search"
+                  className="w-1/3 py-2 border-b-2 border-blue-400 outline-none focus:border-green-400 bg-transparent"
+                  required=""
+                  value={filters.searchTerm}
+                  onChange={(e) => {
+                    setFilters({
+                      ...filters,
+                      searchTerm: e.target.value,
+                    });
+                  }}
+                />
+              </div>
+              <div className="">
+                <button
+                  onClick={createNew}
+                  className="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800"
+                >
+                  <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+                    <i class="bi bi-person-add"></i> Add
+                  </span>
+                </button>
               </div>
             </div>
           </section>
           <div>
-            <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+            <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
               <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                 <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                   <tr>
@@ -214,7 +212,7 @@ export default function Students() {
                         Address{" "}
                         <a href="#">
                           <svg
-                            class="w-3 h-3 ml-1.5"
+                            className="w-3 h-3 ml-1.5"
                             aria-hidden="true"
                             xmlns="http://www.w3.org/2000/svg"
                             fill="currentColor"
@@ -247,7 +245,6 @@ export default function Students() {
                       </th>
                       <td className="px-6 py-4">{student.age}</td>
                       <td className="px-6 py-4">{student.address}</td>
-                      {/* <td className="px-6 py-4">{getGender(student.gender)}</td> */}
                       <td className="px-6 py-4">
                         <AppButton
                           className="font-medium text-blue-600 dark:text-blue-500 hover:underline"

@@ -2,7 +2,11 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  GoogleAuthProvider,
+} from "firebase/auth";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import {
@@ -16,7 +20,9 @@ import {
 import FormHelperText from "@mui/material/FormHelperText";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { Google, Visibility, VisibilityOff } from "@mui/icons-material";
+import { useExecute } from "@app/hooks/use-execute";
+import { authService } from "@app/services/auth.service";
 
 const passwordRegex =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
@@ -34,12 +40,14 @@ const validationSchema = yup.object({
 
 export default function Register() {
   const router = useRouter();
+  const { busy } = useExecute();
   const [alertState, setAlert] = useState({
     open: false,
     message: "",
     severity: "success",
   });
   const [showPassword, setShowPassword] = useState(false);
+  const [currentAction, setCurrentAction] = useState("sign-up-google");
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -57,7 +65,7 @@ export default function Register() {
     try {
       const auth = getAuth();
       await createUserWithEmailAndPassword(auth, values.email, values.password);
-      router.push("/");
+      window.location.href = "/sign-in";
     } catch (e) {
       setAlert({
         open: true,
@@ -65,6 +73,21 @@ export default function Register() {
         severity: "error",
       });
       console.error(e);
+    }
+  };
+
+  const signUpWithGoogle = async () => {
+    try {
+      setCurrentAction("sign-up-google");
+      await authService.signUpWithGoogle();
+      window.location.href = "/";
+    } catch (error) {
+      setAlert({
+        open: true,
+        message: error.message,
+        severity: "error",
+      });
+      console.error(error);
     }
   };
 
@@ -76,6 +99,7 @@ export default function Register() {
     validationSchema,
     onSubmit,
   });
+
   return (
     <div
       className="min-h-screen flex items-center justify-center text-white"
@@ -139,13 +163,21 @@ export default function Register() {
                     {formik.errors.password}
                   </FormHelperText>
                 )}
+              <Button variant="contained" type="submit" color="primary">
+                Register
+              </Button>
               <Button
                 variant="contained"
-                type="submit"
-                // onClick={onSubmit}
-                color="primary"
+                color="inherit"
+                fullWidth
+                className="mb-3 bg-red-500 hover:bg-red-600 text-white"
+                startIcon={<Google />}
+                onClick={signUpWithGoogle}
+                disabled={busy}
               >
-                Register
+                {busy && currentAction === "sign-up-google"
+                  ? "Processing..."
+                  : "Sign Up with Google"}
               </Button>
             </form>
             {alertState.open && (

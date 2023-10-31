@@ -1,10 +1,15 @@
 "use client";
 
 import React from "react";
-import { Card, Typography, TextField, Button } from "@mui/material";
+import {
+  Card,
+  Typography,
+  TextField,
+  Button,
+  FormHelperText,
+} from "@mui/material";
 import { ArrowBack } from "@mui/icons-material";
 import { useDispatch } from "react-redux";
-import { useRouter } from "next/navigation";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { useExecute } from "@app/hooks/use-execute";
@@ -16,7 +21,6 @@ const validationSchema = yup.object().shape({
 });
 
 export default function ForgotPassword() {
-  const router = useRouter();
   const { setNotification } = useDispatch();
   const { execute, busy } = useExecute();
 

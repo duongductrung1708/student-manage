@@ -17,6 +17,7 @@ import {
 import { sleep } from "@app/utils/sleep";
 import { studentBackendService } from "@app/services/student-backend.services";
 import "../css/style.css";
+import { user } from "@app/store/user.model";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -36,7 +37,6 @@ const validationSchema = yup.object({
     .string()
     .required("Address is required")
     .max(200, "Input address must be less than 200 characters"),
-  // gender: yup.string().required("Gender is required"),
 });
 
 export default function CreateNewStudent() {
@@ -91,11 +91,38 @@ export default function CreateNewStudent() {
       name: "",
       age: "",
       address: "",
-      // gender: "M",
     },
     validationSchema,
     onSubmit,
   });
+
+  // if (!user.state.loaded) {
+  //   return (
+  //     <main
+  //       className="sticky top-0 z-50 min-h-screen text-white p-10"
+  //       style={{
+  //         background:
+  //           "linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(83,9,121,1) 49%, rgba(134,0,255,1) 100%);",
+  //       }}
+  //     >
+  //       <div className="border border-blue-300 shadow rounded-md p-4 max-w-sm w-full mx-auto">
+  //         <div className="animate-pulse flex space-x-4">
+  //           <div className="rounded-full bg-slate-700 h-10 w-10"></div>
+  //           <div className="flex-1 space-y-6 py-1">
+  //             <div className="h-2 bg-slate-700 rounded"></div>
+  //             <div className="space-y-3">
+  //               <div className="grid grid-cols-3 gap-4">
+  //                 <div className="h-2 bg-slate-700 rounded col-span-2"></div>
+  //                 <div className="h-2 bg-slate-700 rounded col-span-1"></div>
+  //               </div>
+  //               <div className="h-2 bg-slate-700 rounded"></div>
+  //             </div>
+  //           </div>
+  //         </div>
+  //       </div>
+  //     </main>
+  //   );
+  // }
 
   return (
     <div className="bg-gradient min-h-screen flex items-center justify-center text-white">
@@ -142,21 +169,6 @@ export default function CreateNewStudent() {
             {formik.touched.address && formik.errors.address && (
               <FormHelperText error>{formik.errors.address}</FormHelperText>
             )}
-            {/* <FormControl>
-            <FormLabel id="gender-label">Gender</FormLabel>
-            <RadioGroup
-              aria-labelledby="gender-label"
-              value={formik.values.gender}
-              onChange={(e) => {
-                formik.setFieldValue("gender", e.target.value);
-                console.log(e.target.value);
-              }}
-              name="radio-buttons-group"
-            >
-              <FormControlLabel value="F" control={<Radio />} label="Female" />
-              <FormControlLabel value="M" control={<Radio />} label="Male" />
-            </RadioGroup>
-          </FormControl> */}
             <Button type="submit" className="mt-2" disabled={busy}>
               Save
             </Button>
